@@ -17,7 +17,14 @@ let categories = [
   },
   {
     name: 'other',
-    data: ['birds fly high', 'fish swim in water'],
+    data: [
+      'birds fly high',
+      'fish swim in water',
+      'walmart has good selective items',
+      'coffee is worse than drinking soda',
+      'headaches suck stop overthinking',
+      'categorizer prompts are time consuming sob sobbering crying hearting lol laughing out loud',
+    ],
   },
 ];
 
@@ -78,6 +85,10 @@ function determineCategory(prompt) {
       return {
         cat: categoryForPrompt,
         confidence: maxConfidence,
+        tokens: {
+          count: categoryConfidence[categoryName],
+          token_words: words,
+        },
       };
     } else {
       let possiblecat = [];
@@ -110,11 +121,10 @@ function determineCategory(prompt) {
           Object.keys(called).forEach((k) => {
             names += ' ' + '{' + k + '}';
           });
-          return `While I could not find the specific category, here are some: ${names}, confidence rating: ${possibleconfidence}`;
+          return `Categories your prompt best fit's in ${names},\npredicted confidence: ${possibleconfidence},  accurate confidence: ${categoryConfidence[categoryName]}`;
         }
+        return `Insufficient data for the prompt: ${prompt}\n Confidence: ${categoryConfidence[categoryName]}`;
       }
-      console.log(`My Confidence: ` + categoryConfidence[categoryName]);
-      return `Insufficient data for the prompt: ${prompt} `;
     }
   }
 
@@ -124,5 +134,9 @@ function determineCategory(prompt) {
 }
 
 // Example usage
-const prompt = 'flying dog stuck';
+const prompt = 'dogs are cool';
 console.log(determineCategory(prompt));
+
+console.log(
+  `\nTotal elapsed time taken: ${Math.round(performance.now() - time)}ms`
+);
