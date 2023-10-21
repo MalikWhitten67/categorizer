@@ -51,6 +51,7 @@ categories.forEach((category) => {
 ```
 Finally we determine the category your prompt is tied to based on wordcount confidence and if it can not be determined check if possible that we can calculate the possible confidence.
 
+```js
 let maxConfidence = -1;
   let categoryForPrompt = null;
 
@@ -106,3 +107,5 @@ let maxConfidence = -1;
 
   return categoryForPrompt;
 }
+
+```
