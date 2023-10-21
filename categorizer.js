@@ -1,10 +1,16 @@
-// given category name and data in which we supply to the categorizer to use 
+let time = performance.now();
+// given category name and data in which we supply to the categorizer to use
 let categories = [
   {
     name: 'test',
     data: [
       'my dog is cool',
       'my dog is nice',
+      'flying cars are the new wave',
+      'tesla keeps improving self driving',
+      'word pairs suck',
+      'emojis are a better representable way of writing text messages',
+      'my dog got stuck in the cars window',
       'cats are cool',
       'cats are better than dogs',
     ],
@@ -64,8 +70,8 @@ function determineCategory(prompt) {
 
   for (const categoryName in categoryConfidence) {
     if (
-      categoryConfidence[categoryName] > 5 &&
-      categoryConfidence[categoryName] > maxConfidence
+      categoryConfidence[categoryName] >= 5 &&
+      categoryConfidence[categoryName] >= maxConfidence
     ) {
       maxConfidence = categoryConfidence[categoryName];
       categoryForPrompt = categoryName;
@@ -77,7 +83,7 @@ function determineCategory(prompt) {
       let possiblecat = [];
       let possibleconfidence = 0;
       words.forEach((w) => {
-        w = w.toLowerCase()
+        w = w.toLowerCase();
         if (!wordCounts[w] || wordCounts[w] > 0) {
           wordCounts[w] = 0;
 
@@ -96,9 +102,7 @@ function determineCategory(prompt) {
       if (possiblecat.length > 0) {
         let called = {};
         possiblecat.forEach((category) => {
-          if (!called[category.name]) {
-            called[category.name] = '';
-          }
+          !called[category.name] ? (called[category.name] = '') : null;
         });
 
         if (Object.keys(called).length > 1) {
@@ -109,6 +113,7 @@ function determineCategory(prompt) {
           return `While I could not find the specific category, here are some: ${names}, confidence rating: ${possibleconfidence}`;
         }
       }
+      console.log(`My Confidence: ` + categoryConfidence[categoryName]);
       return `Insufficient data for the prompt: ${prompt} `;
     }
   }
@@ -119,5 +124,5 @@ function determineCategory(prompt) {
 }
 
 // Example usage
-const prompt = 'dog was stuck in a car window fish stuck in car window';
+const prompt = 'flying dog stuck';
 console.log(determineCategory(prompt));
